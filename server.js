@@ -15,9 +15,9 @@ mongoose.connect(database.db, {
     console.log('Cannot connect to database ' + error)
 })
 
-const studentAPI = require('../backend/routes/username.route');
-const skateboardAPI = require('../backend/routes/skateboard.route');
-const historyAPI = require('../backend/routes/history.route');
+const studentAPI = require('./routes/username.route');
+const skateboardAPI = require('./routes/skateboard.route');
+const historyAPI = require('./routes/history.route');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
