@@ -1,27 +1,50 @@
-require('dotenv').config()
-
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const cors = require('cors')
+let express = require('express'),
+    cors = require('cors'),
+    mongoose = require('mongoose'),
+    database = require('./database'),
+    bodyParser = require('body-parser')
 
 // Connect MongoDB
-const DATABASE_URL = process.env.DATABASE_URL || "mongodb+srv://lazade:12345@cluster0.4ejcl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-app.use(cors());
-const db = mongoose.connection
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('Connected to Database'))
-
-app.use(express.json())
+mongoose.Promise = global.Promise;
+mongoose.connect(database.db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Database connected succesfully');
+}, error => {
+    console.log('Cannot connect to database ' + error)
+})
 
 const studentAPI = require('./routes/username.route');
-app.use('/apiUser', studentAPI);
-
 const skateboardAPI = require('./routes/skateboard.route');
-app.use('/apiSB', skateboardAPI);
-
 const historyAPI = require('./routes/history.route');
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+app.use(cors());
+
+// API
+app.use('/apiUser', studentAPI);
+app.use('/apiSB', skateboardAPI);
 app.use('/apiHistory', historyAPI);
 
-app.listen(3000, () => console.log('Server Started'))
+// CREATE PORT
+const port = process.env.PORT || 4000;
+const server = app.listen(port, () => {
+    console.log('Connected to port ' + port)
+})
+
+// 404 Handler
+app.use((req, res, next) => {
+    next(createError(404))
+})
+
+// error handler
+app.use(function(err, req, res, next) {
+    console.error(err.message);
+    if (!err.statusCode) err.statusCode = 500;
+    res.status(err.statusCode).send(err.message)
+})

@@ -1,9 +1,6 @@
+
 const express = require('express');
-const router = express.Router()
-const usernameRoute = express.Router();
-const bodyPaser = require('body-parser')
-const md5 = require('md5');
-const jwt = require('jsonwebtoken')
+const ProductRoute = express.Router();
 
 // Student model
 let UsernameModel = require('../models/username');
@@ -20,14 +17,11 @@ usernameRoute.route('/').get((req, res, next) => {
 })
 
 // Create student data
-usernameRoute.route('/create-username', async (req, res) => {
-    try {
-        await UsernameModel.create(req.body)
-        //console.log('user created successfully' + response)
-        return res.json({ status: 'success' })
-    } catch (error) {
-        return res.json({ status: 'error' })
-    }
+usernameRoute.route('/create-user').post((req,res,next)=>{
+    UsernameModel.create(req.body,(error,data)=>{
+        if(error) return next(error)
+        else res.json(data)
+    })
 })
 
 // Edit student data
