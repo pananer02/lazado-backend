@@ -1,6 +1,6 @@
 
 const express = require('express');
-const ProductRoute = express.Router();
+const usernameRoute = express.Router();
 
 // Student model
 let UsernameModel = require('../models/username');
