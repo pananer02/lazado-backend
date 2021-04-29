@@ -1,4 +1,3 @@
-
 const express = require('express');
 const usernameRoute = express.Router();
 
@@ -19,7 +18,7 @@ usernameRoute.route('/').get((req, res, next) => {
 })
 
 // Create student data
-usernameRoute.route('/create-user').post((req,res,next)=>{
+usernameRoute.route('/create-username').post((req,res,next)=>{
     UsernameModel.create(req.body,(error,data)=>{
         if(error) return next(error)
         else res.json(data)
