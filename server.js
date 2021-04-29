@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // Connect MongoDB
-const DATABASE_URL = process.env.DATABASE_URL || "mongodb+srv://lazade:12345@cluster0.4ejcl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const DATABASE_URL = process.env.DATABASE_URL || "mongodb+srv://lazade:12345@cluster0.4ejcl.mongodb.net/username?retryWrites=true&w=majority"
 mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(cors());
 const db = mongoose.connection

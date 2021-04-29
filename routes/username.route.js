@@ -13,8 +13,17 @@ usernameRoute.route('/').get((req, res, next) => {
             res.json(data);
         }
     })
-})
-
+})/*
+// Getting all
+usernameRoute.get('/', async (req, res) => {
+    try {
+      const Usernames = await UsernameModel.find()
+      res.json(Usernames)
+    } catch (err) {
+      res.status(500).json({ message: err.message })
+    }
+  })
+*/
 // Create student data
 usernameRoute.route('/create-username').post((req, res, next) => {
     UsernameModel.create(req.body, (error, data) => {
