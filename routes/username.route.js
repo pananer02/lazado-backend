@@ -1,6 +1,7 @@
 const express = require('express');
+const router = express.Router()
 const usernameRoute = express.Router();
-
+const md5 = require('md5');
 // Student model
 let UsernameModel = require('../models/username');
 
@@ -16,7 +17,7 @@ usernameRoute.route('/').get((req, res, next) => {
 })
 
 // Create student data
-usernameRoute.route('/create-username').post((req, res, next) => {
+/*usernameRoute.route('/create-username').post((req, res, next) => {
     UsernameModel.create(req.body, (error, data) => {
         if (error) {
             console.log('username unsuccessfully');
@@ -26,6 +27,22 @@ usernameRoute.route('/create-username').post((req, res, next) => {
             console.log('username successfully');
         }
     })
+})*/
+router.post('/create-username', async (req, res) => {
+    //console.log(req.body)
+    /*if(req.body.password.length < 8){
+        return res.json({ msg: '' })
+    }*/
+    req.body.password = md5(req.body.password)
+    //console.log(req.body.password)
+
+    try {
+        await UserModel.create(req.body)
+        //console.log('user created successfully' + response)
+        return res.json({ status: 'success' })
+    } catch (error) {
+        return res.json({ status: 'error' })
+    }
 })
 
 // Edit student data
@@ -66,4 +83,4 @@ usernameRoute.route('/delete-username/:id').delete((req, res, next) => {
     })
 })
 
-module.exports = usernameRoute;
+module.exports = usernameRoute
