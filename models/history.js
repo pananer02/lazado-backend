@@ -24,7 +24,7 @@ let historySchema = new Schema({
         type: Date
     }
 }, {
-    collection: 'historys'
+    collection: 'history'
 })
 
 module.exports = mongoose.model('history', historySchema);
